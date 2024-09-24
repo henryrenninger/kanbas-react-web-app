@@ -21,6 +21,11 @@ export default function Kanbas() {
               <Route path="/Inbox" element={<h1>Inbox</h1>} />
             </Routes>
           </td>
+          <td valign="top">
+            <p>Henry Renninger</p>
+            <p>CS4550 202510_1 Fall 2024</p>
+            <a id="wd-github" href="https://github.com/henryrenninger/kanbas-react-web-app">Github Repo</a>
+          </td>
         </tr>
       </table>
     </div>
