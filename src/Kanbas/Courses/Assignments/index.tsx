@@ -6,8 +6,13 @@ import AssingmentControls from "./AssignmentControls";
 import AssignmentHeaderControlButtons from "./AssignmentHeaderControlButton";
 import { TfiWrite } from "react-icons/tfi";
 import { Link } from "react-router-dom";
-
+import { useParams } from "react-router";
+import * as db from "../../Database";
+import { format } from "date-fns";
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
+
   return (
     <div>
       <AssingmentControls /><br /><br />
@@ -33,66 +38,29 @@ export default function Assignments() {
             </div>
           </div>
           <ul className="wd-assignments list-group rounded-0">
-            <li className="wd-assignment list-group-item p-3 ps-1">
-              <div className="row">
-                <div className="col-1">
-                  <BsGripVertical className="me-2 fs-3" />
-                  <TfiWrite className="me-2 fs-3 make-green" />
-                </div>
-                <div className="col">
-                  <Link className="wd-assignment-link assignment-title me-2" to="/Kanbas/Courses/1234/Assignments/123">
-                    A1
-                  </Link><br />
-                  <div className="d-inline-block">
-                    <span className="red-text">Multiple Modules</span> | <strong>Not available until</strong> May 6 at 12:00am |
-                    <strong> Due</strong> May 13 at 11:59pm | 100 points
+            {assignments
+              .filter((assignment: any) => assignment.course === cid)
+              .map((assignment: any) => (
+                <li className="wd-assignment list-group-item p-3 ps-1">
+                  <div className="row">
+                    <div className="col-1">
+                      <BsGripVertical className="me-2 fs-3" />
+                      <TfiWrite className="me-2 fs-3 make-green" />
+                    </div>
+                    <div className="col">
+                      <Link className="wd-assignment-link assignment-title me-2" to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                        {assignment.title}
+                      </Link><br />
+                      <div className="d-inline-block">
+                        <span className="red-text">Multiple Modules </span> | {(Date.parse(assignment.available.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Not Available until </b>{format(assignment.available, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {(Date.parse(assignment.due.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Due </b>{format(assignment.due, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {assignment.points} points 
+                      </div>
+                    </div>
+                    <div className="col-2">
+                      <AssignmentControlButtons />
+                    </div>
                   </div>
-                </div>
-                <div className="col-2">
-                  <AssignmentControlButtons />
-                </div>
-              </div>
-            </li>
-            <li className="wd-assignment list-group-item p-3 ps-1">
-              <div className="row">
-                <div className="col-1">
-                  <BsGripVertical className="me-2 fs-3" />
-                  <TfiWrite className="me-2 fs-3 make-green" />
-                </div>
-                <div className="col">
-                  <Link className="wd-assignment-link assignment-title me-2" to="/Kanbas/Courses/1234/Assignments/123">
-                    A2
-                  </Link><br />
-                  <div className="d-inline-block">
-                    <span className="red-text">Multiple Modules</span> | <strong>Not available until</strong> May 13 at 12:00am |
-                    <strong>Due</strong> May 20 at 11:59pm | 100 points
-                  </div>
-                </div>
-                <div className="col-2">
-                  <AssignmentControlButtons />
-                </div>
-              </div>
-            </li>
-            <li className="wd-assignment list-group-item p-3 ps-1">
-              <div className="row">
-                <div className="col-1">
-                  <BsGripVertical className="me-2 fs-3" />
-                  <TfiWrite className="me-2 fs-3 make-green" />
-                </div>
-                <div className="col">
-                  <Link className="wd-assignment-link assignment-title me-2" to="/Kanbas/Courses/1234/Assignments/123">
-                    A3
-                  </Link><br />
-                  <div className="d-inline-block">
-                    <span className="red-text">Multiple Modules</span> | <strong>Not available until</strong> May 20 at 12:00am |
-                    <strong>Due</strong> May 27 at 11:59pm | 100 points
-                  </div>
-                </div>
-                <div className="col-2">
-                  <AssignmentControlButtons />
-                </div>
-              </div>
-            </li>
+                </li>
+              ))}
           </ul>
         </li>
       </ul>
