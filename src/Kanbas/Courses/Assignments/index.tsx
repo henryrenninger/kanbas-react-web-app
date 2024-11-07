@@ -1,21 +1,30 @@
 import { BsGripVertical } from "react-icons/bs";
-import LessonControlButtons from "../Modules/LessonControlButtons";
-import ModuleControlButtons from "../Modules/ModuleControlButtons";
-import AssignmentControlButtons from "./AssignmentControlButton";
-import AssingmentControls from "./AssignmentControls";
+import AssignmentControls from "./AssignmentControls";
 import AssignmentHeaderControlButtons from "./AssignmentHeaderControlButton";
-import { TfiWrite } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
-import * as db from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
+import { TfiWrite } from "react-icons/tfi";
+import { addAssignment, updateAssignment, deleteAssignment }
+  from "./reducer";
+import AssignmentControlButtons from "./AssignmentControlButton";
+import { FaTrash } from "react-icons/fa";
+
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const dispatch = useDispatch();
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
+  const handleDelete = (aid: string) => {
+    if (window.confirm("Are you sure you want to delete this assignment?")) {
+      dispatch(deleteAssignment(aid));
+    }
+  };
+  
   return (
     <div>
-      <AssingmentControls /><br /><br />
+      <AssignmentControls /><br /><br />
 
       <h3 id="wd-assignments-title">
 
@@ -55,8 +64,11 @@ export default function Assignments() {
                         <span className="red-text">Multiple Modules </span> | {(Date.parse(assignment.available.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Not Available until </b>{format(assignment.available, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {(Date.parse(assignment.due.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Due </b>{format(assignment.due, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {assignment.points} points 
                       </div>
                     </div>
-                    <div className="col-2">
-                      <AssignmentControlButtons />
+                    <div className="col-1">
+                    <FaTrash 
+                        style={{ cursor: "pointer", color: "red" }} 
+                        onClick={() => handleDelete(assignment._id)} // Pass the assignment ID to delete
+                      /> <AssignmentControlButtons />
                     </div>
                   </div>
                 </li>
