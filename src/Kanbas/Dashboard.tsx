@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import * as db from "./Database";
 import { addEnrollment, deleteEnrollment } from "./reducer";
 
 export default function Dashboard(
   { courses, course, setCourse, addNewCourse,
-    deleteCourse, updateCourse, enrollments }: {
+    deleteCourse, updateCourse }: {
       courses: any[]; course: any; setCourse: (course: any) => void;
       addNewCourse: () => void; deleteCourse: (course: any) => void;
       updateCourse: () => void;
-      enrollments: any[];
     }) {
 
       
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
   const dispatch = useDispatch();
 
   const [showEnrollments, setShowEnrollments] = useState<boolean>(false);
