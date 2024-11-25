@@ -6,21 +6,35 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import { TfiWrite } from "react-icons/tfi";
-import { addAssignment, updateAssignment, deleteAssignment }
+import { addAssignment, updateAssignment, deleteAssignment, setAssignments }
   from "./reducer";
 import AssignmentControlButtons from "./AssignmentControlButton";
 import { FaTrash } from "react-icons/fa";
+import { useEffect } from "react";
+import * as coursesClient from '../client';
+import * as assignmentsClient from './client';
 
 export default function Assignments() {
   const { cid } = useParams();
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      const assignments = await coursesClient.findAssignmentsForCourse(
+        cid as string
+      );
+      dispatch(setAssignments(assignments));
+    };
+    fetchAssignments();
+  }, [cid, dispatch]);
+
   const handleDelete = (aid: string) => {
     if (window.confirm("Are you sure you want to delete this assignment?")) {
       dispatch(deleteAssignment(aid));
     }
   };
+  
   
   return (
     <div>
