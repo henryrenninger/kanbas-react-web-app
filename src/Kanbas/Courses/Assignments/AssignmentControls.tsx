@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import ProtectedContent from "../../Account/ProtectedContent";
 import { addAssignment } from "./reducer";
 
 export default function AssignmentControls() {
@@ -33,24 +34,25 @@ export default function AssignmentControls() {
           placeholder="Search..."
         />
       </div>
-
-      <div className="col">
-        <button
-          id="wd-add-assignment"
-          className="btn btn-lg btn-danger float-end"
-          type="button"
-          onClick={handleAddAssignment}
-        >
-          + Assignment
-        </button>
-        <button
-          id="wd-add-assignment-group"
-          className="btn btn-lg btn-secondary float-end"
-          type="button"
-        >
-          + Group
-        </button>
-      </div>
+      <ProtectedContent username="iron_man">
+        <div className="col">
+          <button
+            id="wd-add-assignment"
+            className="btn btn-lg btn-danger float-end"
+            type="button"
+            onClick={handleAddAssignment}
+          >
+            + Assignment
+          </button>
+          <button
+            id="wd-add-assignment-group"
+            className="btn btn-lg btn-secondary float-end"
+            type="button"
+          >
+            + Group
+          </button>
+        </div>
+      </ProtectedContent>
     </div>
   );
 }

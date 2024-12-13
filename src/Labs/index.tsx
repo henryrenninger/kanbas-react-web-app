@@ -7,6 +7,7 @@ import Lab4 from "./Lab4";
 import Lab5 from "./Lab5";
 import store from "./store";
 import { Provider } from "react-redux";
+import React from "react";
 export default function Labs() {
   return (
     <Provider store={store}>

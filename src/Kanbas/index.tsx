@@ -12,6 +12,7 @@ import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 import * as enrollmentClient from "./Dashboard/client";
 import { useSelector } from "react-redux";
+import React from "react";
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
   const [enrollments, setEnrollments] = useState<any[]>([]);
@@ -34,16 +35,19 @@ export default function Kanbas() {
       const enrollments = await enrollmentClient.fetchAllEnrollments();
       setEnrollments(enrollments);
     };
-    
+
     fetchEnrollments();
   }, []);
+
   useEffect(() => {
     fetchCourses();
   }, [currentUser]);
+  
   const addNewCourse = async () => {
     const newCourse = await userClient.createCourse(course);
     setCourses([...courses, newCourse]);
   };
+
   const deleteCourse = async (courseId: string) => {
     const status = await courseClient.deleteCourse(courseId);
     setCourses(courses.filter((course) => course._id !== courseId));

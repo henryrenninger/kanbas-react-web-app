@@ -6,6 +6,7 @@ import AssignmentEditor from "./Assignments/Editor";
 import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from "react-icons/fa";
 import PeopleTable from "./People/Table";
+import ProtectedContent from "../Account/ProtectedContent";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
@@ -17,9 +18,9 @@ export default function Courses({ courses }: { courses: any[]; }) {
         {course && course.name} &gt; {pathname.split("/")[4]}
       </h2> <hr />
       <div className="d-flex">
-        <div className="d-none d-md-block">
-          <CoursesNavigation />
-        </div>
+          <div className="d-none d-md-block">
+            <CoursesNavigation />
+          </div>
         <div className="flex-fill">
           <Routes>
             <Route path="Home" element={<Home />} />
