@@ -4,7 +4,9 @@ import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
+import { useSelector } from "react-redux";
 export default function KanbasNavigation() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { pathname } = useLocation();
   const links = [
     { label: "Dashboard", path: "/Kanbas/Dashboard", icon: AiOutlineDashboard },
@@ -13,6 +15,7 @@ export default function KanbasNavigation() {
     { label: "Inbox", path: "/Kanbas/Inbox", icon: FaInbox },
     { label: "Labs", path: "/Labs", icon: LiaCogSolid },
   ];
+  const active = (path: string) => (pathname.includes(path) ? "active" : "");
   return (
     <div id="wd-kanbas-navigation" style={{ width: 120 }}
       className="list-group rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2">
@@ -34,6 +37,8 @@ export default function KanbasNavigation() {
           {link.label}
         </Link>
       ))}
+      {currentUser && currentUser.role === "ADMIN" && (
+       <Link to={`/Kanbas/Account/Users`} className={`list-group-item ${active("Users")}`}> Users </Link> )}
     </div>
   );
 }
