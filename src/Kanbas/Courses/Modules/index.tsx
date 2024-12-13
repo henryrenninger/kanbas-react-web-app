@@ -10,6 +10,7 @@ import { addModule, editModule, updateModule, deleteModule, setModules }
 import { useSelector, useDispatch } from "react-redux";
 import * as coursesClient from "../client";
 import * as modulesClient from "./client";
+import ProtectedContent from "../../Account/ProtectedContent";
 
 export default function Modules() {
   const { cid } = useParams();
@@ -43,8 +44,9 @@ export default function Modules() {
   return (
     <div>
       {modules.module}
+      <ProtectedContent username="iron_man">
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={createModuleForCourse} />
-
+      </ProtectedContent>
       <br /><br /><br /><br />
       <ul id="wd-modules" className="list-group rounded-0">
         {modules.map((module: any) => (

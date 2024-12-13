@@ -13,6 +13,7 @@ import { FaTrash } from "react-icons/fa";
 import { useEffect } from "react";
 import * as coursesClient from '../client';
 import * as assignmentsClient from './client';
+import ProtectedContent from "../../Account/ProtectedContent";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -34,8 +35,8 @@ export default function Assignments() {
       dispatch(deleteAssignment(aid));
     }
   };
-  
-  
+
+
   return (
     <div>
       <AssignmentControls /><br /><br />
@@ -68,21 +69,32 @@ export default function Assignments() {
                   <div className="row">
                     <div className="col-1">
                       <BsGripVertical className="me-2 fs-3" />
-                      <TfiWrite className="me-2 fs-3 make-green" />
+                      <ProtectedContent username="iron_man">
+                        <TfiWrite className="me-2 fs-3 make-green" />
+                      </ProtectedContent>
                     </div>
                     <div className="col">
-                      <Link className="wd-assignment-link assignment-title me-2" to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
-                        {assignment.title}
-                      </Link><br />
+                      <ProtectedContent username="iron_man">
+                        <Link className="wd-assignment-link assignment-title me-2" to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                          {assignment.title}
+                        </Link><br />
+                      </ProtectedContent>
+                      <ProtectedContent username="dark_knight">
+                        <span className="wd-assignment-link assignment-title me-2">
+                          {assignment.title}
+                        </span> <br />
+                      </ProtectedContent>
                       <div className="d-inline-block">
-                        <span className="red-text">Multiple Modules </span> | {(Date.parse(assignment.available.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Not Available until </b>{format(assignment.available, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {(Date.parse(assignment.due.replace(/-/g, " ")) > 2024-10-22) ? <span><b>Due </b>{format(assignment.due, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {assignment.points} points 
+                        <span className="red-text">Multiple Modules </span> | {(Date.parse(assignment.available.replace(/-/g, " ")) > 2024 - 10 - 22) ? <span><b>Not Available until </b>{format(assignment.available, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {(Date.parse(assignment.due.replace(/-/g, " ")) > 2024 - 10 - 22) ? <span><b>Due </b>{format(assignment.due, "MMMM d 'at' hh:mma") + ' |'}</span> : ''} {assignment.points} points
                       </div>
                     </div>
                     <div className="col-1">
-                    <FaTrash 
-                        style={{ cursor: "pointer", color: "red" }} 
-                        onClick={() => handleDelete(assignment._id)} // Pass the assignment ID to delete
-                      /> <AssignmentControlButtons />
+                      <ProtectedContent username="iron_man">
+                        <FaTrash
+                          style={{ cursor: "pointer", color: "red" }}
+                          onClick={() => handleDelete(assignment._id)} // Pass the assignment ID to delete
+                        /> <AssignmentControlButtons />
+                      </ProtectedContent>
                     </div>
                   </div>
                 </li>
